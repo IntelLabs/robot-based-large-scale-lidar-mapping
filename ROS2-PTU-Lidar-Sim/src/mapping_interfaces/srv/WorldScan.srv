@@ -1,0 +1,8 @@
+float32 x_grid_size
+float32 y_grid_size
+uint8 pan_steps
+uint8 tilt_steps
+float32 x_dimension
+float32 y_dimension
+---
+uint8 finish
