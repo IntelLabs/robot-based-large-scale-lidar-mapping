@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot
+  name="mapping_custom_description/models/ptu_150cm_150">
+  <link
+    name="tripod_floor_link">
+<!--    <inertial>
+      <origin
+        xyz="0.0116512703539461 0.00676451776494707 1.00479073768505"
+        rpy="0 0 0" />
+      <mass
+        value="1.53251141021217" />
+      <inertia
+        ixx="0.010948021270794"
+        ixy="9.02301838507766E-05"
+        ixz="6.18144580822199E-06"
+        iyy="0.0109831454619846"
+        iyz="6.58150914995151E-05"
+        izz="0.00113207159797084" />
+    </inertial> -->
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/tripod150_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.12941 0.12156 0.10980 1" />
+      </material> 
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/tripod150_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="tripod_mount_link">
+    <inertial>
+      <origin
+        xyz="-0.00294888404648491 -6.05530632036143E-05 -0.0113074480746116"
+        rpy="0 0 0" />
+      <mass
+        value="0.0428916155324412" />
+      <inertia
+        ixx="1.76694609785255E-05"
+        ixy="4.6959447239717E-11"
+        ixz="3.99467658788442E-08"
+        iyy="1.66228817088112E-05"
+        iyz="2.28441583305406E-08"
+        izz="3.03142313419027E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tripod_mount_joint"
+    type="fixed">
+    <origin
+      xyz="0.0555 -0.00249999999999993 1.50025"
+      rpy="-3.13992626619705 0 0" />
+    <parent
+      link="tripod_floor_link" />
+    <child
+      link="tripod_mount_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="pan_axis_link">
+    <inertial>
+      <origin
+        xyz="-0.0121030866226688 -0.000281812640567285 -0.086953249152671"
+        rpy="0 0 0" />
+      <mass
+        value="0.187655806543262" />
+      <inertia
+        ixx="0.000382616024685332"
+        ixy="6.27961339053485E-07"
+        ixz="2.32605787826298E-05"
+        iyy="0.000811069025604346"
+        iyz="-4.78192440846029E-07"
+        izz="0.000535110393438021" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/body_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.65882 0.65882 0.65882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/body_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="pan"
+    type="continuous">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="tripod_mount_link" />
+    <child
+      link="pan_axis_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="tilt_axis_link">
+    <inertial>
+      <origin
+        xyz="2.01714754242965E-06 0.0911639032521732 -0.000794434330623268"
+        rpy="0 0 0" />
+      <mass
+        value="0.488902153241594" />
+      <inertia
+        ixx="0.000534143812531387"
+        ixy="3.72935995125924E-09"
+        ixz="4.16984603062599E-09"
+        iyy="0.000782711804529407"
+        iyz="6.383123568449E-07"
+        izz="0.000405681293590009" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/lidar_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/lidar_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="tilt"
+    type="continuous">
+    <origin
+      xyz="0.00724999999999979 -0.000162194803630762 -0.0973331016588213"
+      rpy="-1.57246271418764 0 0" />
+    <parent
+      link="pan_axis_link" />
+    <child
+      link="tilt_axis_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="lidar_glass_link">
+    <inertial>
+      <origin
+        xyz="1.38777878078145E-17 0.155336120457131 -0.0011558000000001"
+        rpy="0 0 0" />
+      <mass
+        value="0.50410763159155" />
+      <inertia
+        ixx="0.000492148530325034"
+        ixy="-3.75650996219919E-21"
+        ixz="-1.6009660703309E-20"
+        iyy="0.000714723657266138"
+        iyz="-3.98182397870821E-20"
+        izz="0.000492148530325034" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/lidar_mid_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.12941 0.12156 0.10980 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/lidar_mid_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lidar_tilt_glass_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="tilt_axis_link" />
+    <child
+      link="lidar_glass_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="lidar_cap_link">
+    <inertial>
+      <origin
+        xyz="1.20473686706646E-05 0.18754767111886 -0.00116784736867076"
+        rpy="0 0 0" />
+      <mass
+        value="0.0598161953971965" />
+      <inertia
+        ixx="4.08069706031179E-05"
+        ixy="-5.87751329870024E-10"
+        ixz="-8.68166828010215E-12"
+        iyy="8.11138431350567E-05"
+        iyz="5.877513298701E-10"
+        izz="4.08069706031179E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/lidar_top_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/lidar_top_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lidar_glass_cap_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="lidar_glass_link" />
+    <child
+      link="lidar_cap_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="os_sensor">
+    <inertial>
+      <origin
+        xyz="-1.73472347597681E-17 0 0.0671361204571312"
+        rpy="0 0 0" />
+      <mass
+        value="0.50410763159155" />
+      <inertia
+        ixx="0.000492148530325034"
+        ixy="-1.60185464325454E-20"
+        ixz="-1.09918697856152E-19"
+        iyy="0.000492148530325034"
+        iyz="1.10854988868351E-20"
+        izz="0.000714723657266138" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/sensor_cf_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/sensor_cf_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="sensor_cf_joint"
+    type="fixed">
+    <origin
+      xyz="0 0.0881999999999998 -0.00115580000000007"
+      rpy="1.5707963267949 -3.1415926535897 3.1415926535897" />
+    <parent
+      link="tilt_axis_link" />
+    <child
+      link="os_sensor" />
+    <axis
+      xyz="0 0 1" />
+    <limit effort="-1" lower="0.0" upper="0.0" velocity="-1"/>
+  </joint>
+  <link
+    name="os_lidar">
+    <inertial>
+      <origin
+        xyz="-1.20473686706394E-05 1.20473686706507E-05 0.0210516711188606"
+        rpy="0 0 0" />
+      <mass
+        value="0.0598161953971965" />
+      <inertia
+        ixx="4.08069706031179E-05"
+        ixy="-8.68166828008474E-12"
+        ixz="5.87751329897216E-10"
+        iyy="4.08069706031179E-05"
+        iyz="-5.87751329871377E-10"
+        izz="8.11138431350567E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/lidar_cf_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/lidar_cf_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lidar_cf_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 0.07829600000000001"
+      rpy="0 0 3.14159265358979" />
+    <parent
+      link="os_sensor" />
+    <child
+      link="os_lidar" />
+    <axis
+      xyz="0 0 1" />
+    <limit effort="-1" lower="0.0" upper="0.0" velocity="-1"/>
+  </joint>
+  <link
+    name="os_imu">
+    <inertial>
+      <origin
+        xyz="-0.00624095263132873 0.0117629526313294 0.0877026711188607"
+        rpy="0 0 0" />
+      <mass
+        value="0.0598161953971965" />
+      <inertia
+        ixx="4.08069706031179E-05"
+        ixy="-8.68166828008121E-12"
+        ixz="-5.87751329588638E-10"
+        iyy="4.08069706031179E-05"
+        iyz="5.87751329871378E-10"
+        izz="8.11138431350567E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/imu_cf_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mapping_custom_description/models/ptu_150cm/meshes/imu_cf_link.STL" />
+      </geometry>
+    </collision> 
+  </link>
+  <joint
+    name="imu_cf_joint"
+    type="fixed">
+    <origin
+      xyz="0.006253 -0.011775 0.011645"
+      rpy="0 0 0" />
+    <parent
+      link="os_sensor" />
+    <child
+      link="os_imu" />
+    <!--axis
+      xyz="0 0 1" /-->
+  </joint>
+  <link
+    name="cam_1">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.000324412" />
+      <inertia
+        ixx="1.76694609785255E-05"
+        ixy="4.6959447239717E-11"
+        ixz="3.99467658788442E-08"
+        iyy="1.66228817088112E-05"
+        iyz="2.28441583305406E-08"
+        izz="3.03142313419027E-05" />
+    </inertial>
+  </link>
+  <joint
+    name="cam1_joint"
+    type="fixed">
+    <origin
+      xyz="0.115 0.0907 0"
+      rpy="0 0 0" />
+    <parent
+      link="tilt_axis_link" />
+    <child
+      link="cam_1"/>
+  </joint>
+  <link
+    name="cam_2">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.000324412" />
+      <inertia
+        ixx="1.76694609785255E-05"
+        ixy="4.6959447239717E-11"
+        ixz="3.99467658788442E-08"
+        iyy="1.66228817088112E-05"
+        iyz="2.28441583305406E-08"
+        izz="3.03142313419027E-05" />
+    </inertial>
+  </link>
+  <joint
+    name="cam2_joint"
+    type="fixed">
+    <origin
+      xyz="0.115 0.0907 0"
+      rpy="0 0 0" />
+    <parent
+      link="tilt_axis_link" />
+    <child
+      link="cam_2"/>
+  </joint>
+  <!-- <link
+    name="cam_9">
+    <inertial>
+      <origin
+        xyz="0.06275 0.0775 1.59758"
+        rpy="0 0 0" />
+      <mass
+        value="0.000324412" />
+      <inertia
+        ixx="1.76694609785255E-05"
+        ixy="4.6959447239717E-11"
+        ixz="3.99467658788442E-08"
+        iyy="1.66228817088112E-05"
+        iyz="2.28441583305406E-08"
+        izz="3.03142313419027E-05" />
+    </inertial>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <box>
+              <size>0.03 0.03 0.03</size>
+        </box>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="cam9_joint"
+    type="fixed">
+    <origin
+      xyz="0.06275 0.0775 1.59758"
+      rpy="0 0 0" />
+    <parent
+      link="pan_axis_link" />
+    <child
+      link="cam_9" />
+    <!axis
+      xyz="0 0 1" />
+  </joint> -->
+</robot>

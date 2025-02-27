@@ -1,0 +1,22 @@
+ply_converter:
+  ros__parameters:
+    save_ply: 1        #Set 1 to save ply files
+    param_normals: 1    #Set 1 to save ply with normals or 0 to save ply without normals.
+
+world_scan_client:
+  ros__parameters:
+    param_x_grid_size: 2.0
+    param_y_grid_size: 2.0
+    param_pan_steps: 3.0
+    param_tilt_steps: 3.0
+    x_dimension: 20.0
+    y_dimension: 20.0
+
+lidar_prescaler:
+  ros__parameters:
+    param_horizontal_res: 512         #1024, 512 or 256
+    param_vertical_res: 1024           #4096, 2048, 1024 or 512
+
+transform_lidar2world:
+  ros__parameters:
+    color: 0                      #0 No color / 1 Color Point Cloud

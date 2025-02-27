@@ -1,0 +1,7 @@
+build/*
+log/*
+install/*
+ply/*
+ply_normals/*
+src/.vscode/*
+.vscode/*

@@ -1,0 +1,9 @@
+float32 dummy
+---
+float32 posx
+float32 posy
+float32 posz
+float32 orw
+float32 orx
+float32 ory
+float32 orz

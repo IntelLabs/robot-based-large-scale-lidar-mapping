@@ -1,0 +1,5 @@
+int32 dummy
+---
+float64 xdim
+float64 ydim
+float64 zdim
