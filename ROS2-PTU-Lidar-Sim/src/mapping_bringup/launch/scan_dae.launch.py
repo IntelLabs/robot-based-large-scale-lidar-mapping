@@ -1,16 +1,27 @@
+"""
+Copyright (C) 2025 Intel Corporation
+SPDX-License-Identifier: Apache-2.0
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+ +File name: scan_dae.launch.py
+ +Description: Launch file to scan DAE models in a simulated Gazebo environment.
+ +Author: Javier Felix-Rendon
+ +Mail: javier.felix.rendon@intel.com
+ +Version: 1.0
+ +Date: 5/2/2025
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+"""
+
 import os
 
 from ament_index_python.packages import get_package_share_directory
-
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.actions import IncludeLaunchDescription
-from launch.actions import ExecuteProcess
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess, RegisterEventHandler
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-
+from launch.event_handlers import OnProcessExit
 from launch_ros.actions import Node
+
 
 def generate_launch_description():
     # Configure ROS nodes for launch
@@ -23,42 +34,40 @@ def generate_launch_description():
     pkg_project_mapping_applications = get_package_share_directory('mapping_applications')
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
-    #Load yaml parameters
-    config = os.path.join(
-    pkg_project_mapping_bringup,
-    'config',
-    'params.yaml'
-    )
+    # Load yaml parameters
+    config = os.path.join(pkg_project_mapping_bringup, 'config', 'params.yaml')
 
     # Load the SDF file from "description" package
-    sdf_file  =  os.path.join(pkg_project_mapping_custom_description, 'models', 'ptu_150cm', 'model_description.sdf')
+    sdf_file = os.path.join(pkg_project_mapping_custom_description, 'models', 'ptu_150cm', 'model_description.sdf')
     with open(sdf_file, 'r') as infp:
         robot_desc = infp.read()
 
     # Setup to launch the simulator and Gazebo world
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
-        launch_arguments={'gz_args': PathJoinSubstitution([
-            pkg_project_mapping_gazebo,
-            'worlds',
-            'ptu_lidar.sdf'
-        ])}.items(),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')
+        ),
+        launch_arguments={
+            'gz_args': PathJoinSubstitution([
+                pkg_project_mapping_gazebo,
+                'worlds',
+                'ptu_lidar.sdf'
+            ])
+        }.items(),
     )
 
-     # Load World to scan
+    # Load World to scan
     file = os.path.join(
         pkg_project_mapping_custom_description,
         'models',
         'dae',
         'model.sdf'
-
     )
     gz_world_create = ExecuteProcess(
         cmd=[[
             'ros2 run ros_gz_sim create --args -file "',
             file,
-            '" -name build_model'          
+            '" -name build_model'
         ]],
         shell=True
     )
@@ -86,6 +95,7 @@ def generate_launch_description():
         output='screen'
     )
 
+    # Define application nodes
     wss = Node(
         package='mapping_applications',
         executable='world_scan_server'
@@ -94,7 +104,7 @@ def generate_launch_description():
     tl2w = Node(
         package='mapping_applications',
         executable='transform_lidar2world',
-        parameters= [config]
+        parameters=[config]
     )
 
     l360 = Node(
@@ -110,22 +120,22 @@ def generate_launch_description():
     ply_conv = Node(
         package='mapping_applications',
         executable='ply_converter',
-        parameters= [config]
+        parameters=[config]
     )
 
     np = Node(
         package='mapping_applications',
         executable='pc2numpy.py',
-        parameters= [config]
+        parameters=[config]
     )
 
     np_low = Node(
         package='mapping_applications',
         executable='pc2numpy_low.py',
-        parameters= [config]
+        parameters=[config]
     )
 
-    #Unpause simulation
+    # Unpause simulation
     bridge_unpause = ExecuteProcess(
         cmd=[[
             'ros2 run ros_gz_bridge parameter_bridge /world/ptu_lidar_world/control@ros_gz_interfaces/srv/ControlWorld'
@@ -140,19 +150,38 @@ def generate_launch_description():
         shell=True
     )
 
+    # Build processes
+    build_colcon_first = ExecuteProcess(
+        cmd=[['colcon build']],
+        shell=True
+    )
+
+    build_colcon_second = ExecuteProcess(
+        cmd=[['colcon build']],
+        shell=True
+    )
+
     return LaunchDescription([
-        gz_sim,
-        bridge,
-        robot_state_publisher,
-        wss,
-        tl2w,
-        l360,
-        normal,
-        ply_conv,
-        np,
-        #np_low,
-        gz_world_create,
-        bridge_unpause,
-        unpause,
-        
+        build_colcon_first,
+        build_colcon_second,
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=build_colcon_second,
+                on_exit=[
+                    gz_sim,
+                    bridge,
+                    robot_state_publisher,
+                    wss,
+                    tl2w,
+                    l360,
+                    normal,
+                    ply_conv,
+                    np,
+                    np_low,
+                    gz_world_create,
+                    bridge_unpause,
+                    unpause,
+                ]
+            )
+        ),
     ])

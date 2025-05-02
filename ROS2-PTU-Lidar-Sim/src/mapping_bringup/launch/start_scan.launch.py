@@ -1,3 +1,16 @@
+"""
+Copyright (C) 2025 Intel Corporation
+SPDX-License-Identifier: Apache-2.0
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+ +File name: start_scan.launch.py
+ +Description: Launch file to start the world scan client node.
+ +Author: Javier Felix-Rendon
+ +Mail: javier.felix.rendon@intel.com
+ +Version: 1.0
+ +Date: 5/2/2025
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+"""
+
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -23,22 +36,19 @@ def generate_launch_description():
     pkg_project_mapping_applications = get_package_share_directory('mapping_applications')
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
-    #Load yaml parameters
+    # Load yaml parameters
     config = os.path.join(
-    pkg_project_mapping_bringup,
-    'config',
-    'params.yaml'
+        pkg_project_mapping_bringup,
+        'config',
+        'params.yaml'
     )
 
     world_scan_client_start = Node(
         package='mapping_applications',
         executable='world_scan_client',
-        parameters= [config]
+        parameters=[config]
     )
-
-   
 
     return LaunchDescription([
         world_scan_client_start,
-        
     ])
