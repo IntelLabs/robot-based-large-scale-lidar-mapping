@@ -1,5 +1,17 @@
+/**
+Copyright (C) 2025 Intel Corporation
+SPDX-License-Identifier: Apache-2.0
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+ +File name: PtuCollision.cc
+ +Description: Implements a Gazebo plugin to detect and handle collisions for a pan-tilt unit (PTU).
+ +Author: Javier Felix-Rendon
+ +Mail: javier.felix.rendon@intel.com
+ +Version: 1.0
+ +Date: 5/2/2025
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+*/
 #include "mapping_gazebo/PtuCollision.hh"
-//#include <gz/rendering/BoundingBox.hh>
+
 
 #include <algorithm>
 #include <optional>
@@ -28,76 +40,61 @@ using namespace systems;
 
 class gz::sim::systems::PtuCollisionPrivate
 {
-  // Initialize the plugin
+ 
   public: void Load(const EntityComponentManager &_ecm,
                     const sdf::ElementPtr &_sdf);
 
-  /// \brief Actual function that enables the plugin.
-  /// \param[in] _value True to enable plugin.
+
   public: void Enable(const bool _value);
 
-  /// \brief Process contact sensor data and determine if a touch event occurs
-  /// \param[in] _info Simulation update info
-  /// \param[in] _ecm Immutable reference to the EntityComponentManager
+
   public: void Update(const UpdateInfo &_info,
                       const EntityComponentManager &_ecm);
 
-  /// \brief Add target entities. Called when new collisions are found
-  /// \param[in] _ecm Immutable reference to the EntityComponentManager
-  /// \param[in] _entities List of potential entities to add to targetEntities.
+
   public: void AddTargetEntities(const EntityComponentManager &_ecm,
                                  const std::vector<Entity> &_entities);
 
-  /// \brief Model interface
+  
   public: Model model{kNullEntity};
 
-  /// \brief Transport node to keep services alive
+
   transport::Node node;
 
-  /// \brief Collision entities that have been designated as contact sensors.
-  /// These will be checked against the targetEntities to establish whether this
-  /// model is touching the targets
+
   public: std::vector<Entity> collisionEntities;
 
-  /// \brief Name of target. Kept for debug printing
+
   public: std::string targetName;
 
-  /// \brief Target collisions which this model should be touching.
   public: std::vector<Entity> targetEntities;
 
-  /// \brief std::chrono::duration type used throught this plugin
   public: using DurationType = std::chrono::duration<double>;
 
-  /// \brief Target time to continuously touch.
+
   public: DurationType targetTime{0};
 
-  /// \brief Time when started touching.
+
   public: DurationType touchStart{0};
 
-  /// \brief Namespace for transport topics.
   public: std::string ns;
 
-  /// \brief Publisher which publishes a message after touched for enough time
+ 
   public: std::optional<transport::Node::Publisher> touchedPub;
 
-  /// \brief Copy of the sdf configuration used for this plugin
+
   public: sdf::ElementPtr sdfConfig;
 
-  /// \brief Initialization flag
+ 
   public: bool initialized{false};
 
-  /// \brief Set during Load to true if the configuration for the plugin is
-  /// valid and the pre and post update can run
   public: bool validConfig{false};
 
-  /// \brief Whether the plugin is enabled.
   public: bool enabled{false};
 
-  /// Value used to reset the world with the initial value
   public: bool enableInitialValue{false};
 
-  /// \brief Mutex for variables mutated by the service callback.
-  /// The variables are: touchPub, touchStart, enabled
+
   public: std::mutex serviceMutex;
 };
 
@@ -112,7 +109,7 @@ void PtuCollision::Reset(const gz::sim::UpdateInfo &/*_info*/,
 void PtuCollisionPrivate::Load(const EntityComponentManager &_ecm,
                          const sdf::ElementPtr &_sdf)
 {
-  // Get target substring
+
   if (!_sdf->HasElement("target"))
   {
     gzerr << "Missing required parameter <target>." << std::endl;
@@ -131,9 +128,7 @@ void PtuCollisionPrivate::Load(const EntityComponentManager &_ecm,
 
   this->AddTargetEntities(_ecm, potentialEntities);
 
-  // Create a list of collision entities that have been marked as contact
-  // sensors in this model. These are collisions that have a ContactSensorData
-  // component
+
   auto allLinks =
       _ecm.ChildrenByComponents(this->model.Entity(), components::Link());
 
@@ -251,8 +246,6 @@ void PtuCollisionPrivate::Update(const UpdateInfo &_info,
   if (_info.paused)
     return;
 
-  // Iterate through all the target entities and check if there is a contact
-  // between the target entity and this model
   for (const Entity colEntity : this->collisionEntities)
   {
     auto *contacts = _ecm.Component<components::ContactSensorData>(colEntity);
@@ -295,9 +288,7 @@ void PtuCollisionPrivate::AddTargetEntities(const EntityComponentManager &_ecm,
 
   for (Entity entity : _entities)
   {
-    // The target name can be a substring of the desired collision name so we
-    // have to iterate through all collisions and check if their scoped name has
-    // this substring
+
     std::string name = scopedName(entity, _ecm);
     if (name.find(this->targetName) != std::string::npos)
     {
