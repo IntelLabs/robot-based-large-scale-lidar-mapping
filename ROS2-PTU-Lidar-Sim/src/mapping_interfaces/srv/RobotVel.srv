@@ -1,15 +1,15 @@
-/**
-Copyright (C) 2025 Intel Corporation
-SPDX-License-Identifier: Apache-2.0
-+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
- +File name: RobotVel.srv
- +Description: Service definition for setting the velocities of a robot and its components.
- +Author: Javier Felix-Rendon
- +Mail: javier.felix.rendon@intel.com
- +Version: 1.0
- +Date: 5/2/2025
-+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-*/
+#/**
+#Copyright (C) 2025 Intel Corporation
+#SPDX-License-Identifier: Apache-2.0
+#+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+# +File name: RobotVel.srv
+# +Description: Service definition for setting the velocities of a robot and its components.
+# +Author: Javier Felix-Rendon
+# +Mail: javier.felix.rendon@intel.com
+# +Version: 1.0
+# +Date: 5/2/2025
+#+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+#*/
 float32 x_vel
 float32 y_vel
 float32 ang_vel
